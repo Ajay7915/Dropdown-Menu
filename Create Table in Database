@@ -1,0 +1,28 @@
+You have to create three table in database inorder to create three level dependent dropdown list i.e.(State, District, City/Palika):
+
+Here is the code in laravel of creating three linked table using laravel:
+
+//For State
+Schema::create('state', function (Blueprint $table) {
+            $table->id('sid');
+            $table->string('name');
+            $table->timestamps();
+     });
+     
+//For district
+   Schema::create('districts', function (Blueprint $table) {
+            $table->id('did');
+            $table->string('districtName');
+            $table->unsignedBigInteger('sid');
+            $table->foreign('sid')->references('sid')->on('state');
+            $table->timestamps();
+        });
+        
+  //City
+    Schema::create('city', function (Blueprint $table) {
+            $table->id('pid');
+            $table->string('ame');
+            $table->unsignedBigInteger('did');
+            $table->foreign('did')->references('did')->on('districts');
+            $table->timestamps();
+        });
