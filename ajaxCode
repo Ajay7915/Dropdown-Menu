@@ -1,0 +1,68 @@
+                                <div class="form-row">
+                                    <div class="col-md-3 mb-3">
+                                        <label for="validationCustom02">प्रदेश</label>
+                                        <select class="form-control" id="state" name="">
+                                            <option value disabled selected>छन्नुहोस्......</option>
+                                            @foreach($data as $row)
+                                            <option value="{{$row->sid}}">{{$row->pardeshName}}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="validationCustom02">जिल्ला</label>
+                                        <select class="form-control" name="" id="district">
+                                            <option value="" disabled selected>छन्नुहोस्......</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="validationCustom02">पालिका</label>
+                                        <select class="form-control" name="" id="palika">
+                                            <option value="" disabled selected>छन्नुहोस्......</option>
+                                        </select>
+                                    </div>                                    
+                                </div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+<script>
+    $(document).ready(function() {
+        // For State
+        $('#state').change(function() {
+            let sid = $(this).val();
+            $('#palika').html('<option disabled selected value="">छन्नुहोस्......</option>');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "{{route('getState')}}",
+                type: 'post',
+                data: 'sid=' + sid,
+                success: function(data) {
+                    $('#district').html(data);
+                }
+            });
+        });
+        
+        //For District 
+        $('#district').change(function() {
+            let did = $(this).val();
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+            $.ajax({
+                url: "{{route('getCity')}}",
+                type: 'post',
+                data: 'did=' + did,
+                success: function(data) {
+                    $('#palika').html(data);
+                }
+            });
+        });
+
+     });
+</script>
