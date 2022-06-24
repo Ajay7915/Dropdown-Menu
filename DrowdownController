@@ -1,0 +1,56 @@
+<?php
+
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
+use App\Models\Pardesh;
+use App\Models\District;
+use App\Models\Palika;
+use App\Models\Webcam;
+class DisableController extends Controller
+{
+    
+    public function index()
+    {
+        $data = Pardesh::orderBy('pardeshName','asc')->get();
+        return view('admin.disable.index',compact('data'));
+    }
+
+    public function getState(Request $request) {
+        $sid = $request->post('sid');
+        $district= District::where('sid',$sid)->get();        
+        $html = '<option disabled selected value="">छन्नुहोस्......</option>';
+        foreach($district as $data) {
+            $html.='<option value="'.$data->did.'">'.$data->districtName.'</option>';
+        }
+        return $html;        
+    }
+
+    
+
+    public function getCity(Request $request) {
+        $did = $request->post('did');
+        $palika= Palika::where('did',$did)->get();        
+        $html = '<option disabled selected value="">छन्नुहोस्......</option>';
+        foreach($palika as $data) {
+            $html.='<option value="'.$data->pid.'">'.$data->palikaName.'</option>';
+        }
+        return $html;        
+    }
+
+   
+    public function create()
+    {        
+        $data = Pardesh::orderBy('pardeshName','asc')->get();
+        return view('admin.disable.add',compact('data'));
+    }
+
+
+   
+  
+   
+   
+ 
+
+}
